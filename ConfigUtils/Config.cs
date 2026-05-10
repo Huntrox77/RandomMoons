@@ -12,9 +12,6 @@ namespace RandomMoons.ConfigUtils;
 [DataContract]
 public class RMConfig : SyncedConfig<RMConfig>
 {
-    // Should we start the level when traveling to a new moon ? 
-    [DataMember] public SyncedEntry<bool> AutoStart { get; private set; }
-
     // Should we explore a new moon once the level has ended ? 
     [DataMember] public SyncedEntry<bool> AutoExplore { get; private set; }
 
@@ -31,14 +28,20 @@ public class RMConfig : SyncedConfig<RMConfig>
     [DataMember] public SyncedEntry<int> SyncedVar { get; private set; }
 
     // Bind config entries
-    public RMConfig(ConfigFile cfg) : base("InnohVateur.RandomMoons")
+    public RMConfig(ConfigFile cfg) : base("Huntress.RandomMoons")
     {
         ConfigManager.Register(this);
+
+        AutoExplore = cfg.BindSyncedEntry(
+            new ConfigDefinition("General", "AutoExplore"),
+            false,
+            new ConfigDescription("Automatically travels to a random moon after leaving one.")
+        );
 
         CheckIfVisitedDuringQuota = cfg.BindSyncedEntry(
             new ConfigDefinition("General","RegisterTravels"),
             false,
-            new ConfigDescription("The same moon can't be chosen twice while the quota hasn't changed")
+            new ConfigDescription("The same moon can't be chosen twice while the quota hasn't changed (Idk if works, probably does)")
         );
 
         RestrictedCommandUsage = cfg.BindSyncedEntry(
@@ -59,6 +62,11 @@ public class RMConfig : SyncedConfig<RMConfig>
             new ConfigDescription("This is a debug variable, you can ignore it")
         );
 
+        var CheckAutoExplore = new BoolCheckBoxConfigItem(AutoExplore.Entry, new BoolCheckBoxOptions
+        {
+            RequiresRestart = false
+        });
+
         var CheckIfVisitedDuringQuota_input = new BoolCheckBoxConfigItem(CheckIfVisitedDuringQuota.Entry, new BoolCheckBoxOptions
         {
             RequiresRestart = false
@@ -72,6 +80,7 @@ public class RMConfig : SyncedConfig<RMConfig>
 
         EnumDropDownConfigItem<MoonSelection> moonSelectionType_input = new EnumDropDownConfigItem<MoonSelection>(MoonSelectionType.Entry, false);
 
+        LethalConfigManager.AddConfigItem(CheckAutoExplore);
         LethalConfigManager.AddConfigItem(CheckIfVisitedDuringQuota_input);
         LethalConfigManager.AddConfigItem(RestrictedCommandUsage_input);
         LethalConfigManager.AddConfigItem(moonSelectionType_input);

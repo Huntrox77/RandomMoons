@@ -51,6 +51,11 @@ public class ExploreCommand
                 return "Please wait before travelling to a new moon !";
             }
 
+            if (States.hasGambled && RMConfig.Instance.RestrictedCommandUsage) // If the ship cannot travel
+            {
+                return "You cannot go to another random moon yet!";
+            }
+
             // Choose a random moon from moons shown in the terminal and travel to it at no cost.
             SelectableLevel moon = ChooseRandomMoon(terminal.moonsCatalogueList); 
             StartOfRound.Instance.ChangeLevelServerRpc(moon.levelID, terminal.groupCredits);

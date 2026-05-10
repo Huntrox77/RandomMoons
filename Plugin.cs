@@ -26,7 +26,7 @@ public class RandomMoons : BaseUnityPlugin
     // Basic mod infos
     internal const string modGUID = "Huntress.RandomMoons";
     internal const string modName = "Huntress's RandomMoons Fork";
-    internal const string modVersion = "1.0.0";
+    internal const string modVersion = "1.0.5";
 
     // Harmony instance
     readonly Harmony harmony = new(modGUID);

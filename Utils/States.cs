@@ -10,7 +10,6 @@ internal class States
     public static bool closedUponConfirmation = false; // If the terminal closed while confirming explore command
     public static bool isInteracting = false; // If the player is currently confirming or denying explore command
     public static bool hasGambled = false; // If someone used explore / if the ship autoExplored the current day
-    public static bool exploreASAP = false; // If the ship should travel to a random moon upon finishing leaving the current level
     public static List<string> visitedMoons = []; // Lists the moons visited by exploring during the current quota
 
     //Config stuff
