@@ -35,18 +35,6 @@ public class RMConfig : SyncedConfig<RMConfig>
     {
         ConfigManager.Register(this);
 
-        AutoStart = cfg.BindSyncedEntry(
-            new ConfigDefinition("General","AutoStart"),
-            false,
-            new ConfigDescription("Automatically starts the level upon travelling to a random moon")
-        );
-
-        AutoExplore = cfg.BindSyncedEntry(
-            new ConfigDefinition("General","AutoExplore"),
-            false,
-            new ConfigDescription("Automatically explore to a random moon upon leaving the level")
-        );
-
         CheckIfVisitedDuringQuota = cfg.BindSyncedEntry(
             new ConfigDefinition("General","RegisterTravels"),
             false,
@@ -71,16 +59,6 @@ public class RMConfig : SyncedConfig<RMConfig>
             new ConfigDescription("This is a debug variable, you can ignore it")
         );
 
-        var AutoStart_input = new BoolCheckBoxConfigItem(AutoStart.Entry, new BoolCheckBoxOptions
-        {
-            RequiresRestart = false
-        });
-
-        var AutoExplore_input = new BoolCheckBoxConfigItem(AutoExplore.Entry, new BoolCheckBoxOptions
-        {
-            RequiresRestart = false
-        });
-
         var CheckIfVisitedDuringQuota_input = new BoolCheckBoxConfigItem(CheckIfVisitedDuringQuota.Entry, new BoolCheckBoxOptions
         {
             RequiresRestart = false
@@ -94,8 +72,6 @@ public class RMConfig : SyncedConfig<RMConfig>
 
         EnumDropDownConfigItem<MoonSelection> moonSelectionType_input = new EnumDropDownConfigItem<MoonSelection>(MoonSelectionType.Entry, false);
 
-        LethalConfigManager.AddConfigItem(AutoStart_input);
-        LethalConfigManager.AddConfigItem(AutoExplore_input);
         LethalConfigManager.AddConfigItem(CheckIfVisitedDuringQuota_input);
         LethalConfigManager.AddConfigItem(RestrictedCommandUsage_input);
         LethalConfigManager.AddConfigItem(moonSelectionType_input);

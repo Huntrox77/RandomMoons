@@ -1,12 +1,15 @@
-﻿using System;
-using System.Linq;
-using BepInEx.Logging;
+﻿using BepInEx.Logging;
 using CSync;
+using LethalAPI.LibTerminal;
 using LethalAPI.LibTerminal.Attributes;
 using LethalAPI.LibTerminal.Interactions;
 using LethalAPI.LibTerminal.Interfaces;
+using LethalAPI.LibTerminal.Models;
 using RandomMoons.ConfigUtils;
 using RandomMoons.Utils;
+using System;
+using System.Linq;
+using static UnityEngine.GraphicsBuffer;
 
 namespace RandomMoons.Commands;
 
@@ -43,12 +46,6 @@ public class ExploreCommand
 
         if (s.ToLower() == "c" || s.ToLower() == "confirm") // If the player confirms the interaction
         {
-            // TODO: redo the way the config works below
-            if (States.hasGambled && RMConfig.Instance.RestrictedCommandUsage.Value) // If the ship already explored
-            {
-                return "You have already explored. Please land before exploring once again !";
-            }
-
             if (StartOfRound.Instance.shipHasLanded || !StartOfRound.Instance.CanChangeLevels()) // If the ship cannot travel
             {
                 return "Please wait before travelling to a new moon !";
@@ -57,10 +54,6 @@ public class ExploreCommand
             // Choose a random moon from moons shown in the terminal and travel to it at no cost.
             SelectableLevel moon = ChooseRandomMoon(terminal.moonsCatalogueList); 
             StartOfRound.Instance.ChangeLevelServerRpc(moon.levelID, terminal.groupCredits);
-
-            // If AutoStart enabled, tell StartOfRoundPatch to start a level asap
-            if (RMConfig.Instance.AutoStart.Value)
-                States.startUponArriving = true;
 
             States.lastVisitedMoon = moon.PlanetName;
             States.isInteracting = false; // End of interaction

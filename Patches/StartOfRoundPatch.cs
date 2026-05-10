@@ -33,25 +33,8 @@ internal class StartOfRoundPatch
             States.visitedMoons = [];
         }
 
-        // Confirms the auto start
-        if (__instance.travellingToNewLevel && States.startUponArriving)
-        {
-            States.confirmedAutostart = true;
-            States.startUponArriving = false;
-        }
-
-        // Performs auto start
-        //if (!__instance.travellingToNewLevel && States.confirmedAutostart)
-        //{
-                
-        //}
-
         if (__instance.CanChangeLevels() && States.exploreASAP) // Performs auto explore
         {
-            // TODO: redo the way the configs works
-            if (RMConfig.Instance.AutoStart.Value)
-                States.startUponArriving = true;
-
             // If there are more than 0 days left, perform the same as explore command, else travel to Gordion (Company Building)
             if (TimeOfDay.Instance.daysUntilDeadline > 0 || __instance.currentLevelID == States.companyBuildingLevelID)
             {
@@ -61,7 +44,16 @@ internal class StartOfRoundPatch
                 States.hasGambled = true;
             }
             else {
-                __instance.ChangeLevelServerRpc(States.companyBuildingLevelID, terminal.groupCredits);
+                SelectableLevel moon = ExploreCommand.ChooseRandomMoon(terminal.moonsCatalogueList);
+
+                if (terminal.moonsCatalogueList.Length < States.companyBuildingLevelID)
+                {
+                    __instance.ChangeLevelServerRpc(3, terminal.groupCredits);
+                }
+                else
+                {
+                    __instance.ChangeLevelServerRpc(States.companyBuildingLevelID, terminal.groupCredits);
+                }
             }
         }
     }
@@ -70,10 +62,7 @@ internal class StartOfRoundPatch
     [HarmonyPostfix]
     public static void ArriveAtLevelPatch()
     {
-        if (States.confirmedAutostart) return;
-
         Thread.Sleep(1000);
-        States.confirmedAutostart = false;
 
         GameObject startLever = GameObject.Find("StartGameLever"); // Find ship's level game object
         if (startLever == null) return;

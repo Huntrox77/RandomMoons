@@ -24,9 +24,9 @@ namespace RandomMoons;
 public class RandomMoons : BaseUnityPlugin
 {
     // Basic mod infos
-    internal const string modGUID = "InnohVateur.RandomMoons";
-    internal const string modName = "RandomMoons";
-    internal const string modVersion = "1.3.0";
+    internal const string modGUID = "Huntress.RandomMoons";
+    internal const string modName = "Huntress's RandomMoons Fork";
+    internal const string modVersion = "1.0.0";
 
     // Harmony instance
     readonly Harmony harmony = new(modGUID);

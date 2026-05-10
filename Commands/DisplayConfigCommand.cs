@@ -31,7 +31,7 @@ namespace RandomMoons.Commands
 
             //We want to create a string that contain all of the current config, and the state of the syncing.
 
-            ConfigString = $"{RMConfig.Instance.AutoStart}, {RMConfig.Instance.AutoExplore}, {RMConfig.Instance.CheckIfVisitedDuringQuota}, "
+            ConfigString = $"{RMConfig.Instance.CheckIfVisitedDuringQuota}, "
                 + $"{RMConfig.Instance.RestrictedCommandUsage}, {RMConfig.Instance.MoonSelectionType}";
 
 
